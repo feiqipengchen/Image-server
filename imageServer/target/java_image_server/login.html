@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>用户登录</h2>
+    <form v-on:submit.prevent="login()">
+        用户名:<input type="text" v-model="username"><br><br>
+        密 码：<input type="password" v-model="password"><br><br>
+        <input type="submit" value="登录">
+        <p style="color: #0a628f">{{message}}</p>
+    </form>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            username:'',
+            password:'',
+            message:''
+        },
+        methods:{
+            login:function () {
+                //alert(this.username+","+this.password)
+                $.ajax({
+                    url: "login",
+                    type: "post",
+                    data: "username="+app.username+"&password="+app.password,
+                    context: this,
+                    success: function(data, status) {
+                        if (data.ok){
+                            window.location.href='index.html';
+                        }else {
+                            app.message=data.msg;
+                        }
+
+                    },
+                    error: function (err, textStatus, throwable) {
+
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>
